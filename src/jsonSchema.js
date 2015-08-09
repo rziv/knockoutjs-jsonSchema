@@ -1,7 +1,17 @@
-/* global ko */
-"use strict";
-ko.jsonSchema = function () {
-
+(function (factory) {
+  "use strict"; 
+  //CommonJS
+  if (typeof exports === "object" && typeof module === "object") {
+          module.exports = factory(require('knockout'));
+  //AMD
+  } else if (typeof define === "function" && define.amd) {
+      define(["knockout"], factory);
+  //normal script tag
+  } else {
+      factory(ko);
+  }
+}(function (ko) {
+  "use strict";
     var config;
 
     var defaultConfig = {
@@ -31,7 +41,7 @@ ko.jsonSchema = function () {
     var isRequired = function (property) {
         return (typeof this.properties === "object" && this.properties[property]
                   && this.properties[property].hasOwnProperty("required"));
-    };    
+    };
 
     var createMainSchema = function () {
         return {
@@ -80,7 +90,7 @@ ko.jsonSchema = function () {
 
         var objectType = extend(Object.create(base), {
             condition: function (property) { return property !== null && typeof property === "object"; },
-            generate: function (property) {                
+            generate: function (property) {
                 return {
                     type: "object",
                     properties: {},
@@ -250,7 +260,7 @@ ko.jsonSchema = function () {
 
                 addRequired.call(subSchema.items || subSchema, property);
 
-                if (typeof vm[property] === "object" && !Array.isArray(vm[property])) {                   
+                if (typeof vm[property] === "object" && !Array.isArray(vm[property])) {
                     generateProperties(vm[property], container[property]);
                 }
             }
@@ -270,7 +280,7 @@ ko.jsonSchema = function () {
         var array;
 
         var removeAllButFirst = function () {
-            // keep only the first entry in arrays and convert arrays with objects into objects 
+            // keep only the first entry in arrays and convert arrays with objects into objects
             array = array.slice(0, 1);
         };
 
@@ -320,11 +330,13 @@ ko.jsonSchema = function () {
         generators.observable.generators[name] = func;
     };
 
+    ko.jsonSchema = {
+      generate: generate,
+      registerGenerator:registerGenerator,
+      registerObservableGenerator :registerObservableGenerator,
+      generators:generators
+    }
 
-    return {
-        generate: generate,
-        registerGenerator: registerGenerator,
-        registerObservableGenerator: registerObservableGenerator,
-        generators: generators
-    };
-}();
+    return ko.jsonSchema;
+}
+));
