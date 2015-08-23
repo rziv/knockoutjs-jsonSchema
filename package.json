@@ -1,6 +1,6 @@
 {
   "name": "ko-jsonschema",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "json schema generator",
   "main": "src/jsonSchema.js",
   "repository": {

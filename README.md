@@ -7,7 +7,6 @@ This allows you to easely generate a schema that can be used to validate your JS
 
 Basic Usage
 -----------
-
 *knockout-jsonSchema* creates a `ko.jsonSchema` object.
 To create a JSON schema simply use the generateSchema method.
 The methods gets the knockout view model as the first parameter and an optional settings object as the second.
@@ -25,7 +24,7 @@ var viewModel = {
 
 ko.jsonSchema.generate(viewModel);
 ```
-this opertaion will produce the following JSON schema:
+This opertaion will produce the following JSON schema:
 ```json
      {
         "title": "",
@@ -102,6 +101,8 @@ The following command will generate a schema that excludes the firstName and las
    ko.jsonSchema.generate(viewModel,{ignore:['lastName','firstName'], additionalProperties: true, title: "sample schema"});
  ```
 
+ Extending the Generator
+ -----------------------
 The plugin is extensible. For example, say that for boolean types you want the schema to allow not only boolean values but also their string representation.
 This can be acheived by adding your own generator:
 ```  javascript
@@ -123,9 +124,49 @@ ko.jsonSchema.registerGenerator("booleanType", {
             });
 ```
 
+Server Side Validation
+-----------------------
+In order to validate the JSON data on the server, you first have to export your view model, npm install ko-jsonschema and create the JSON schema.
+Then, you can validate the json data against the schema with [any software](http://json-schema.org/implementations.html) that supports [version 4](http://json-schema.org/documentation.html) of the json schema specification.
+
+Following is an example using [is-my-json-valid](https://github.com/mafintosh/is-my-json-valid/)
+assuming you have exported a view model that contains a single required firstName property in src/viewModel.js:
+
+```  javascript
+var viewModel = require("./src/viewModel.js")
+var jsonSchema = require("ko-jsonSchema")
+var schema = jsonSchema.generate(viewModel)
+
+var validator = require('is-my-json-valid')
+
+var validate = validator(jsonSchema.generate(viewModel))
+
+console.log('should be valid', validate({firstName: 'John'}))
+console.log('should not be valid', validate({hello: 'world'}))
+console.log(validate.errors)
+```
+
+To be sure, the view model in src/viewModel.js is defined as follows:
+```  javascript
+var ko = require("knockout");
+require("knockout.validation");
+
+module.exports = {
+       firstName: ko.observable("foo").extend({
+                    required: true,
+                    minLength: 3,
+                    pattern: {
+                        message: "Hey this doesnt match my pattern",
+                        params: "^[a-zA-Z]+$"
+                    }
+             })
+};
+```
+
+
 Dependencies
 ------------
-* Knockout 2.0+
+* knockout 2.0+
 
 Build
 -----
