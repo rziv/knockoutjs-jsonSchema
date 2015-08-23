@@ -1,8 +1,8 @@
 {
   "name": "ko-jsonschema",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "json schema generator",
-  "main": "src/jsonSchema.js",  
+  "main": "src/jsonSchema.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/rziv/knockoutjs-jsonSchema.git"

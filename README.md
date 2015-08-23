@@ -1,5 +1,5 @@
 # knockout-jsonSchema
-*knockout-jsonSchema* is a [Knockout.js](http://knockoutjs.com/) plugin designed to generate a JSON schema according to [json-schema.org](http://json-schema.org/) specifications. 
+*knockout-jsonSchema* is a [Knockout.js](http://knockoutjs.com/) plugin designed to generate a JSON schema according to [json-schema.org](http://json-schema.org/) specifications.
 The generated JSON schema describes the valid JSON data for a given knockout view model including the data restrictions which were defined using the [Knockout-Validation](https://github.com/Knockout-Contrib/Knockout-Validation) library.
 
 This allows you to easely generate a schema that can be used to validate your JSON data on the server side (using the technology of your pick), while keeping your model definitions and restirctions automatically in sync on both client and server.
@@ -9,7 +9,7 @@ Basic Usage
 -----------
 
 *knockout-jsonSchema* creates a `ko.jsonSchema` object.
-To create a JSON schema simply use the generateSchema method. 
+To create a JSON schema simply use the generateSchema method.
 The methods gets the knockout view model as the first parameter and an optional settings object as the second.
 
 **generrate** *- ko.jsonSchema.generate(viewModel, [settings])*
@@ -52,10 +52,10 @@ this opertaion will produce the following JSON schema:
     }
  ```
 
-The basic knockout-validation definitions are supported so the validations on your 
+The basic knockout-validation definitions are supported so the validations on your
 view model will be reflected in the JSON schema.
 ```js
-   var viewModel = {   
+   var viewModel = {
 	   firstName: ko.observable("foo").extend({
 					required: true,
 					minLength: 3,
@@ -67,9 +67,9 @@ view model will be reflected in the JSON schema.
    };
 
    ko.jsonSchema.generate(viewModel);
- ```   
+ ```
 Now the firstName property in the schema has the restirctions defined by the knockout validation exetnders:
-    
+
 ```  json
 	{
   "title": "",
@@ -100,7 +100,7 @@ additionalProperties can also be defined specifically on each object within the 
 The following command will generate a schema that excludes the firstName and lastName properties, allows additional properties and has "sample schema" as its title:
 ```  javascript
    ko.jsonSchema.generate(viewModel,{ignore:['lastName','firstName'], additionalProperties: true, title: "sample schema"});
- ```   
+ ```
 
 The plugin is extensible. For example, say that for boolean types you want the schema to allow not only boolean values but also their string representation.
 This can be acheived by adding your own generator:
@@ -133,7 +133,7 @@ This project uses [grunt](http://gruntjs.com/) for building/minifying.
 
 Install from NPM
 ------------------
-    npm install knockout-jsonSchema --save
+    npm install ko-jsonschema --save
 
 License
 -------
