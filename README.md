@@ -148,19 +148,32 @@ console.log(validate.errors)
 
 To be sure, the view model in src/viewModel.js is defined as follows:
 ```  javascript
-var ko = require("knockout");
-require("knockout.validation");
-
-module.exports = {
-       firstName: ko.observable("foo").extend({
-                    required: true,
-                    minLength: 3,
-                    pattern: {
-                        message: "Hey this doesnt match my pattern",
-                        params: "^[a-zA-Z]+$"
-                    }
-             })
-};
+(function (factory) {
+  "use strict";
+  //CommonJS
+  if (typeof exports === "object" && typeof module === "object") {
+          require("knockout.validation");
+          module.exports = factory(require("knockout"));
+  //AMD
+  } else if (typeof define === "function" && define.amd) {
+      define(["knockout","knockout.validation"], factory);
+  //normal script tag
+  } else {
+    window.viewModel = factory(ko);
+  }
+}(function (ko) {
+                  return {
+                         firstName: ko.observable("foo1").extend({
+                                      required: true,
+                                      minLength: 3,
+                                      pattern: {
+                                          message: "Hey this doesnt match my pattern",
+                                          params: "^[a-zA-Z]+$"
+                                      }
+                               })
+                  };
+}
+));
 ```
 
 
